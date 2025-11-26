@@ -16,7 +16,15 @@ function TabNavigation() {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const headerHeight = 100; // Высота фиксированного хедера
+      const additionalOffset = 15; // Дополнительный отступ, чтобы заголовок был ближе к шапке
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight + additionalOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
       setActiveTab(sectionId);
     }
   };
@@ -47,9 +55,9 @@ function TabNavigation() {
   }, []);
 
   return (
-    <div className="box-border content-stretch flex gap-[8px] items-start px-[80px] py-0 relative shrink-0 w-full">
-      <div className="basis-0 border-b border-[#29292a] box-border content-stretch flex grow items-start min-h-px min-w-px relative shrink-0">
-        <div className="content-stretch flex gap-[24px] items-start relative shrink-0">
+    <div className="box-border content-stretch flex gap-[8px] items-start px-0 md:px-[80px] py-0 relative shrink-0 w-full">
+      <div className="basis-0 border-b border-[#29292a] box-border content-stretch flex grow items-start min-h-px min-w-px relative shrink-0 overflow-x-auto overflow-y-hidden scrollbar-hide pl-[16px] md:pl-0">
+        <div className="content-stretch flex gap-[24px] items-start relative shrink-0 pr-[16px] md:pr-0">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -63,7 +71,7 @@ function TabNavigation() {
                 }`}
               >
                 <div className="box-border content-stretch flex gap-[8px] h-[36px] items-center justify-center overflow-clip pb-[11px] pt-[4px] px-0 relative rounded-[inherit]">
-                  <div className={`flex flex-col font-inter font-medium justify-center leading-[0] not-italic relative shrink-0 text-[14px] text-nowrap ${
+                  <div className={`flex flex-col font-inter font-medium justify-center leading-[0] not-italic relative shrink-0 text-[13px] md:text-[14px] text-nowrap ${
                     isActive ? 'text-accent' : 'text-text-placeholder'
                   }`}>
                     <p className="leading-[20px] whitespace-pre">{tab.label}</p>
